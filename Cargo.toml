@@ -1,0 +1,27 @@
+[package]
+name = "silero-voice"
+version = "0.1.0"
+description = "Silero TTS v5 (Russian) without Python: a DLL LoreLens loads when the voice is installed"
+edition = "2021"
+
+[lib]
+# The DLL is what LoreLens loads; the Rust library is for programs that link it directly.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+anyhow = "1"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+unicode-general-category = "1"
+# TorchScript through libtorch, which the build downloads (CPU build, about 200 MB).
+tch = { version = "0.26", features = ["download-libtorch"] }
+
+# libtorch 2.13 needs C++20 with Visual Studio, and in C++20 a line may not start with the
+# word "module", which tch uses as a type name. `vendor.ps1` makes the patched copy.
+[patch.crates-io]
+torch-sys = { path = "vendor/torch-sys" }
+
+[profile.release]
+opt-level = 2
+strip = true

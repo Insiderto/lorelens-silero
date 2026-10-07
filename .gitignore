@@ -1,0 +1,8 @@
+# Made by vendor.ps1, export_silero.py and build.ps1.
+/vendor/
+/model/
+/package/
+/target/
+
+# The archive for Releases.
+*.zip
